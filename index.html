@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeCraft — Build your resume, live</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-theme="light">
+
+    <div class="topbar">
+        <div class="brand">
+            <div class="brand-mark">RC</div>
+            <div>
+                <div class="brand-name">ResumeCraft</div>
+                <span class="brand-tag">Live resume builder</span>
+            </div>
+        </div>
+        <div class="topbar-actions">
+            <button class="icon-btn" id="themeToggle" title="Toggle theme">🌙</button>
+            <button class="btn" id="analyzeBtn">Analyze Resume</button>
+            <button class="btn btn-accent" id="exportBtn">Export PDF</button>
+        </div>
+    </div>
+
+    <div class="workspace">
+        <!-- RAIL -->
+        <nav class="rail" id="rail">
+            <div class="rail-title">Build</div>
+            <button class="rail-item active" data-section="personal"><span class="num">01</span>Personal Info<span
+                    class="done-dot"></span></button>
+            <button class="rail-item" data-section="summary"><span class="num">02</span>Summary<span
+                    class="done-dot"></span></button>
+            <button class="rail-item" data-section="experience"><span class="num">03</span>Experience<span
+                    class="done-dot"></span></button>
+            <button class="rail-item" data-section="education"><span class="num">04</span>Education<span
+                    class="done-dot"></span></button>
+            <button class="rail-item" data-section="skills"><span class="num">05</span>Skills<span
+                    class="done-dot"></span></button>
+            <button class="rail-item" data-section="projects"><span class="num">06</span>Projects<span
+                    class="done-dot"></span></button>
+            <button class="rail-item" data-section="certifications"><span class="num">07</span>Certifications<span
+                    class="done-dot"></span></button>
+
+            <div class="rail-meter">
+                <div class="meter-label"><span>Resume strength</span><span class="meter-pct" id="meterPct">0%</span>
+                </div>
+                <div class="meter-track">
+                    <div class="meter-fill" id="meterFill"></div>
+                </div>
+                <div id="meterChecks"></div>
+            </div>
+        </nav>
+
+        <!-- FORM PANEL -->
+        <main class="form-panel" id="formPanel">
+
+            <section class="form-section active" data-section="personal">
+                <div class="section-head">
+                    <h2>Personal information</h2>
+                    <p>How employers will identify and reach you.</p>
+                </div>
+                <div class="field-grid">
+                    <div class="field"><label>Full name</label><input type="text" id="f-name"
+                            placeholder="Muhammad Ibrahim"></div>
+                    <div class="field"><label>Title / headline</label><input type="text" id="f-title"
+                            placeholder="Computer Science Student"></div>
+                    <div class="field"><label>Email</label><input type="email" id="f-email" placeholder="you@email.com">
+                    </div>
+                    <div class="field"><label>Phone</label><input type="text" id="f-phone"
+                            placeholder="+92 300 0000000"></div>
+                    <div class="field"><label>Location</label><input type="text" id="f-location"
+                            placeholder="Rawalpindi, Pakistan"></div>
+                    <div class="field"><label>LinkedIn</label><input type="text" id="f-linkedin"
+                            placeholder="linkedin.com/in/you"></div>
+                    <div class="field full"><label>GitHub</label><input type="text" id="f-github"
+                            placeholder="github.com/you"></div>
+                </div>
+            </section>
+
+            <section class="form-section" data-section="summary">
+                <div class="section-head">
+                    <h2>Professional summary</h2>
+                    <p>Two to three sentences on who you are and what you're looking for.</p>
+                </div>
+                <div class="field full">
+                    <label>Summary</label>
+                    <textarea id="f-summary" maxlength="300" rows="6"
+                        placeholder="I am a computer science student focused on..."></textarea>
+                    <div class="hint"><span id="summaryCount">0 / 300 characters</span></div>
+                </div>
+            </section>
+
+            <section class="form-section" data-section="experience">
+                <div class="section-head">
+                    <h2>Experience</h2>
+                    <p>Internships, jobs, freelance work — most recent first.</p>
+                </div>
+                <div id="experienceList"></div>
+                <button class="add-btn" id="addExperience">+ Add experience</button>
+            </section>
+
+            <section class="form-section" data-section="education">
+                <div class="section-head">
+                    <h2>Education</h2>
+                    <p>Degrees, in progress or completed.</p>
+                </div>
+                <div id="educationList"></div>
+                <button class="add-btn" id="addEducation">+ Add education</button>
+            </section>
+
+            <section class="form-section" data-section="skills">
+                <div class="section-head">
+                    <h2>Skills</h2>
+                    <p>Pick a target role for suggestions, or add your own.</p>
+                </div>
+                <div class="field">
+                    <label>Target role</label>
+                    <select id="f-role">
+                        <option value="">Select a role for suggestions…</option>
+                    </select>
+                </div>
+                <div class="suggest-title">Suggested skills</div>
+                <div class="chip-row" id="suggestRow"></div>
+                <div class="skill-input-row">
+                    <input type="text" id="f-skillInput" placeholder="Add a custom skill and press Enter">
+                    <button class="btn btn-primary btn-sm" id="addSkillBtn">Add</button>
+                </div>
+                <div class="suggest-title">Your skills</div>
+                <div class="chip-row" id="skillChips"></div>
+            </section>
+
+            <section class="form-section" data-section="projects">
+                <div class="section-head">
+                    <h2>Projects</h2>
+                    <p>What you built, and what it's made of.</p>
+                </div>
+                <div id="projectsList"></div>
+                <button class="add-btn" id="addProject">+ Add project</button>
+            </section>
+
+            <section class="form-section" data-section="certifications">
+                <div class="section-head">
+                    <h2>Certifications</h2>
+                    <p>Courses, credentials, badges worth listing.</p>
+                </div>
+                <div id="certificationsList"></div>
+                <button class="add-btn" id="addCertification">+ Add certification</button>
+            </section>
+
+        </main>
+
+        <!-- PREVIEW PANEL -->
+        <aside class="preview-panel" id="previewPanel">
+            <div class="preview-toolbar">
+                <div class="tpl-switch" id="tplSwitch">
+                    <button data-tpl="modern" class="active">Modern</button>
+                    <button data-tpl="professional">Professional</button>
+                    <button data-tpl="minimal">Minimal</button>
+                </div>
+                <span class="score-badge" id="stamp">0%</span>
+            </div>
+            <div class="paper tpl-modern" id="paper"></div>
+        </aside>
+    </div>
+
+    <nav class="mobile-nav">
+        <button class="mobile-nav-btn active" data-view="rail">Sections</button>
+        <button class="mobile-nav-btn" data-view="form">Edit</button>
+        <button class="mobile-nav-btn" data-view="preview">Preview</button>
+    </nav>
+
+    <!-- ANALYZER DRAWER -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="drawer" id="drawer">
+        <div class="drawer-head">
+            <div>
+                <h2>Resume analysis</h2>
+                <p>Generated from your current draft</p>
+            </div>
+            <button class="icon-btn" id="closeDrawer">✕</button>
+        </div>
+        <div class="drawer-body">
+            <div class="score-hero">
+                <div class="score-circle" id="ringNumWrap"><span class="n" id="ringNum">0%</span><span
+                        class="l">overall</span></div>
+                <div class="score-sub">A quick read of how complete and effective your resume looks right now, based on
+                    what you've filled in.</div>
+            </div>
+
+            <div class="subscore-row">
+                <div class="subscore-top"><span>Content</span><span id="scContentN">0%</span></div>
+                <div class="subscore-track">
+                    <div class="subscore-fill" id="scContent"></div>
+                </div>
+            </div>
+            <div class="subscore-row">
+                <div class="subscore-top"><span>Formatting</span><span id="scFormatN">0%</span></div>
+                <div class="subscore-track">
+                    <div class="subscore-fill" id="scFormat"></div>
+                </div>
+            </div>
+            <div class="subscore-row">
+                <div class="subscore-top"><span>Completeness</span><span id="scCompleteN">0%</span></div>
+                <div class="subscore-track">
+                    <div class="subscore-fill" id="scComplete"></div>
+                </div>
+            </div>
+            <div class="subscore-row">
+                <div class="subscore-top"><span>Skills</span><span id="scSkillsN">0%</span></div>
+                <div class="subscore-track">
+                    <div class="subscore-fill" id="scSkills"></div>
+                </div>
+            </div>
+
+            <div class="suggest-list" id="suggestList"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
